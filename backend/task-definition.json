@@ -1,0 +1,36 @@
+[
+  {
+    "name": "webapp_ecs_backend_container",
+    "image": "ECR_IMAGE",
+    "memory": 1024,
+    "memoryReservation": 512,
+    "cpu": 1024,
+    "essential": true,
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80,
+        "protocol": "tcp"
+      }
+    ],
+    "workingDirectory": "/app",
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "webapp_ecs_backend",
+        "awslogs-region": "eu-south-1",
+        "awslogs-stream-prefix": "webapp"
+      }
+    },
+    "healthCheck": {
+      "command": [
+        "CMD-SHELL",
+        "/usr/bin/curl localhost/health || exit 1"
+      ],
+      "interval": 5,
+      "timeout": 5,
+      "startPeriod": 15,
+      "retries": 3
+    }
+  }
+]
